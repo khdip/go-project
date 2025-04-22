@@ -1,0 +1,43 @@
+package main
+
+import (
+	"log"
+	"net/http"
+	"text/template"
+	"time"
+
+	"github.com/gorilla/mux"
+)
+
+func getHome(w http.ResponseWriter, r *http.Request) {
+	tmp, _ := template.New("home.html").ParseFiles("./assets/templates/home.html")
+	err := tmp.Execute(w, nil)
+	if err != nil {
+		log.Println("Error Executing Template: ", err)
+		return
+	}
+}
+
+func getAbout(w http.ResponseWriter, req *http.Request) {
+	tmp, _ := template.New("about.html").ParseFiles("./assets/templates/about.html")
+	err := tmp.Execute(w, nil)
+	if err != nil {
+		log.Println("Error Executing Template: ", err)
+		return
+	}
+}
+
+func main() {
+	req := mux.NewRouter()
+
+	req.HandleFunc("/", getHome).Methods("GET")
+	req.HandleFunc("/about", getAbout).Methods("GET")
+
+	srv := &http.Server{
+		Handler:      req,
+		Addr:         "127.0.0.1:8080",
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+	log.Fatal(srv.ListenAndServe())
+}

@@ -1,0 +1,4 @@
+ul {margin: 0; padding: 0; list-style: none;}
+ul li {float: left; margin-right: 20px;}
+a {text-decoration: None; color: #465de2;}
+a:hover {color: #1435f0;}
